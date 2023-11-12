@@ -6,6 +6,7 @@ disable_overscan=1
 disable_splash=1
 
 # Use DesignWare Core 2 (SoC's USB 2.0 controller) for Linux OTG support
+dtoverlay=upstream-pi4
 dtoverlay=dwc2
 
 # Next stage config (run U-Boot)
@@ -13,8 +14,6 @@ arm_64bit=1
 kernel=u-boot.bin
 enable_uart=1
 uart_2ndstage=1
-# Not usable on latest firmware
-#dtoverlay=disable-bt
 
 # include extra config, if any
 include extraconfig.txt
