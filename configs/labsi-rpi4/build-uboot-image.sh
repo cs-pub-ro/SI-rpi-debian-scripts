@@ -59,14 +59,17 @@ $SUDO mount "${LO_DEV}p1" "$MOUNT_TMP"
 mkdir -p "$TMP_DOWNLOAD_DIR"
 for file in "${RPI_FIRMWARE_FILES[@]}"; do
     # download the latest rpi firmware files (debian repo is outdated)
+    mkdir -p "$TMP_DOWNLOAD_DIR/$(dirname "$file")"
     wget "https://github.com/raspberrypi/firmware/raw/master/boot/$file" \
         -O "$TMP_DOWNLOAD_DIR/$file"
+    $SUDO mkdir -p "$MOUNT_TMP/$(dirname "$file")"
     $SUDO cp -f "$TMP_DOWNLOAD_DIR/$file" "$MOUNT_TMP/$file"
 done
 
 $SUDO cp -f "$DIST_DIR/labsi-rpi4/u-boot.bin" "$MOUNT_TMP/u-boot.bin"
-$SUDO cp -f "$DIST_DIR/labsi-rpi4/"*".dtb" "$MOUNT_TMP/"
+#$SUDO cp -f "$DIST_DIR/labsi-rpi4/"*".dtb" "$MOUNT_TMP/"
 $SUDO cp -f "$CUSTOM_CONFIG_DIR/files/boot/config.txt" "$MOUNT_TMP/config.txt"
+$SUDO cp -f "$CUSTOM_CONFIG_DIR/files/boot/cmdline.txt" "$MOUNT_TMP/cmdline.txt"
 
 log_debug $'Firmware files list: \n' "$(ls -lh "$MOUNT_TMP")"
 $SUDO du -hs "$MOUNT_TMP"
