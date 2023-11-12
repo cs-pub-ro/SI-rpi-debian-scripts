@@ -1,0 +1,7 @@
+fdt addr ${fdt_addr} && fdt get value bootargs /chosen bootargs
+# set decompression zone in RAM at 400MB, 64MB in size
+setenv kernel_comp_addr_r 0x19000000
+setenv kernel_comp_size 0x04000000
+fatload mmc 0:1 ${kernel_addr_r} vmlinuz-6.1.61-rpi+
+booti ${kernel_addr_r} - ${fdt_addr}
+
