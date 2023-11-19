@@ -25,3 +25,9 @@ function rootfs_install_hook() {
 	cp -ar "$CUSTOM_CONFIG_DIR/files/"* "$INSTALL_SRC/files/"
 }
 
+function image_build_hook() {
+	export BUILD_FULL_IMAGE=1
+	export ROOTFS_MOUNTPOINT="$1"
+	"$CUSTOM_CONFIG_DIR/copy-boot-files.sh" "$1/$RPI_FIRMWARE_DIR"
+}
+

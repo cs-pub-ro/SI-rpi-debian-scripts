@@ -2,6 +2,21 @@ fdt addr ${fdt_addr} && fdt get value bootargs /chosen bootargs
 # set decompression zone in RAM at 400MB, 64MB in size
 setenv kernel_comp_addr_r 0x19000000
 setenv kernel_comp_size 0x04000000
-fatload mmc 0:1 ${kernel_addr_r} vmlinuz-6.1.61-rpi+
+
+setenv kernel_file vmlinuz-6.1.61-rpi+
+
+if test -e mmc 0:1 vmlinuz-student; then
+	echo -- Found vmlinuz-student; using it! --
+	setenv kernel_file vmlinuz-student
+else
+	echo -- NOT FOUND: vmlinuz-student; will boot from stock kernel (${kernel_file}) --
+fi
+
+for i in 1 2 3 4 5 6 7 8 9 10; do
+	echo Sleeping [${i}/10] seconds, then booting ${kernel_file}! Press Ctrl+C to interrupt!
+	if sleep 1; then true; else exit; fi
+done
+
+fatload mmc 0:1 ${kernel_addr_r} ${kernel_file}
 booti ${kernel_addr_r} - ${fdt_addr}
 
